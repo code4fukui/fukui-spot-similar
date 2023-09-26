@@ -1,4 +1,5 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
+<title>福井観光スポット似たもの探し</title>
 </head><body>
 
 <h1 id=h1>福井観光スポット似たもの探し</h1>
@@ -6,8 +7,10 @@
 <main id=main></main>
 
 <hr>
+<footer>
 Data: CC BY <a href=https://www.fuku-e.com/>ふくいドットコム</a> （<a href=https://github.com/code4fukui/fukui-spot>福井観光オープンデータ on GitHub</a>）<br>
 <a href=https://github.com/code4fukui/fukui-spot-similar>src on GitHub</a><br>
+</footer>
 
 <script type="module">
 import { CSV } from "https://js.sabae.cc/CSV.js";
@@ -114,7 +117,7 @@ for (const d of data) {
 
 <style>
 .spot img {
-  width: 97vw;
+  width: 95vw;
 }
 .similar > div > div, .dissimilar > div > div {
   display: inline-block;
@@ -127,6 +130,9 @@ for (const d of data) {
   object-fit: cover;
 }
 main {
+  margin: 1em;
+}
+footer {
   margin: 1em;
 }
 
