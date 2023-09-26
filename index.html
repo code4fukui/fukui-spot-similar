@@ -56,6 +56,9 @@ export const makeElement = (obj) => {
     } else if (Array.isArray(v)) {
       d.setAttribute("href", v[0]);
       d.appendChild(makeElement(v[1]));
+      if (v[2]) {
+        d.setAttribute("target", v[2]);
+      }
     } else if (typeof v == "object") {
       d.appendChild(makeElement(v));
     }
@@ -92,7 +95,13 @@ for (const d of data) {
     return {
       a_id: d.id,
       h2: d.name + "（" + d.area + "）",
-      img: d.image,
+      a: [
+        d.url,
+        {
+          img: d.image,
+        },
+        "fukuidotcom",
+      ],
       div_description: d.description,
     };
   };
