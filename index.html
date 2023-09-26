@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
+</head><body>
+
+<h1 id=h1>福井観光スポット似たもの探し</h1>
+
+<main id=main></main>
+
+<hr>
+Data: CC BY <a href=https://www.fuku-e.com/>ふくいドットコム</a> （<a href=https://github.com/code4fukui/fukui-spot>福井観光オープンデータ on GitHub</a>）<br>
+<a href=https://github.com/code4fukui/fukui-spot-similar>src on GitHub</a><br>
+
+<script type="module">
+import { CSV } from "https://js.sabae.cc/CSV.js";
+import { IEEE32 } from "https://code4fukui.github.io/IEEE754/IEEE32.js";
+import { Base64URL } from "https://code4fukui.github.io/Base64URL/Base64URL.js";
+import { shuffle } from "https://js.sabae.cc/shuffle.js";
+import { rnd } from "https://js.sabae.cc/rnd.js";
+
+const data = await CSV.fetchJSON("./fukui-spot_vec_similar.csv");
+
+const setbg = async () => {
+  const d = data[rnd(data.length)];
+  const img = {
+    url_image: d.image,
+    author: "ふくいドットコム",
+  };
+  h1.style.backgroundImage = `url(${img.url_image})`;
+  //console.log(img)
+  //h1cap.textContent = `${img.title} CC BY ${img.author}`;
+  //h1cap.href = img.url;
+};
+setbg();
+h1.onclick = () => setbg();
+
+export const makeElement = (obj) => {
+  const list = [];
+  for (const name in obj) {
+    const v = obj[name];
+    const [tag, cls] = name.split("_");
+    const d = document.createElement(tag);
+    if (cls) d.className = cls;
+    if (typeof v == "string") {
+      if (tag == "img") {
+        d.setAttribute("src", v);
+        d.setAttribute("loading", "lazy");
+      } else if (tag == "a") {
+        if (cls == "id") {
+          d.setAttribute("id", v);
+        }
+      } else {
+        d.textContent = v;
+      }
+    } else if (Array.isArray(v)) {
+      d.setAttribute("href", v[0]);
+      d.appendChild(makeElement(v[1]));
+    } else if (typeof v == "object") {
+      d.appendChild(makeElement(v));
+    }
+    list.push(d);
+  }
+  if (list.length == 1) {
+    return list[0];
+  }
+  const con = document.createElement("div");
+  for (const l of list) {
+    con.appendChild(l);
+  }
+  return con;
+};
+
+shuffle(data);
+
+for (const d of data) {
+  const makeSpot = (d) => {
+    if (typeof d == "string") {
+      d = data.find(a => a.id == d);
+    }
+    return {
+      div: d.name,
+      a: [
+        "#" + d.id,
+        {
+          img: d.image,
+        }
+      ],
+    };
+  };
+  const makeSpotDetail = (d) => {
+    return {
+      a_id: d.id,
+      h2: d.name + "（" + d.area + "）",
+      img: d.image,
+      div_description: d.description,
+    };
+  };
+  
+  main.appendChild(makeElement({
+    div_spot: makeSpotDetail(d),
+    h2_text1: "似ている観光地 トップ3",
+    div_similar: {
+      div_similar1: makeSpot(d.similar1),
+      div_similar2: makeSpot(d.similar2),
+      div_similar3: makeSpot(d.similar3),
+    },
+    h2_text2: "似てない観光地 トップ3",
+    div_dissimilar: {
+      div_dessimilar1: makeSpot(d.dissimilar1),
+      div_dissimilar2: makeSpot(d.dissimilar2),
+      div_dissimilar3: makeSpot(d.dissimilar3),
+    },
+  }));
+}
+</script>
+
+<style>
+.spot img {
+  width: 97vw;
+}
+.similar > div > div, .dissimilar > div > div {
+  display: inline-block;
+  width: 29vw;
+  margin-right: .8vw;
+}
+.similar img, .dissimilar img {
+  width: 29vw;
+  height: 20vw;
+  object-fit: cover;
+}
+main {
+  margin: 1em;
+}
+
+/* title */
+body {
+  background-color: #f8faf8;
+  margin: 0;
+}
+h1 {
+  text-align: center;
+  font-size: 250%;
+  padding: 2em .1em;
+  margin: 0;
+  background-position: 0% center;
+  background-size: 150% auto;
+  color: black;
+  text-shadow:1px 1px 0 #FFF, -1px -1px 0 #FFF,
+              -1px 1px 0 #FFF, 1px -1px 0 #FFF,
+              0px 1px 0 #FFF,  0-1px 0 #FFF,
+              -1px 0 0 #FFF, 1px 0 0 #FFF;
+  animation: bgmove 30s infinite;
+  /*animation-timing-function: linear;*/
+  animation-timing-function: ease-in-out;
+}
+@keyframes bgmove {
+  from {
+    background-position: 50% center;
+  }
+  50% {
+    background-position: 0% center;
+  }
+  to {
+    background-position: 50% center;
+  }
+}
+</style>
+
+</body></html>
