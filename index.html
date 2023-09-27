@@ -131,18 +131,20 @@ const show = (id) => {
   }
   main.innerHTML = "";
   const d = data.find(d => d.id == id);
-  main.appendChild(makeContent(d));
+  const c = makeContent(d);
+  main.appendChild(c);
   for (let i = 0; i < ncontent - 1; i++) {
     const d = data[i];
     main.appendChild(makeContent(d));
   }
+  return c;
 };
 
 show(location.hash.substring(1));
 
 onhashchange = () => {
-  show(location.hash.substring(1));
-  scrollTo(0, 0);
+  const c = show(location.hash.substring(1));
+  c.scrollIntoView();
 };
 </script>
 
