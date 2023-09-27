@@ -74,9 +74,7 @@ export const makeElement = (obj) => {
   return con;
 };
 
-shuffle(data);
-
-for (const d of data) {
+const makeContent = (d) => {
   const makeSpot = (d) => {
     if (typeof d == "string") {
       d = data.find(a => a.id == d);
@@ -106,7 +104,7 @@ for (const d of data) {
     };
   };
   
-  main.appendChild(makeElement({
+  return makeElement({
     div_spot: makeSpotDetail(d),
     h2_text1: "似ている観光地 トップ3",
     div_similar: {
@@ -120,8 +118,32 @@ for (const d of data) {
       div_dissimilar2: makeSpot(d.dissimilar2),
       div_dissimilar3: makeSpot(d.dissimilar3),
     },
-  }));
-}
+  });
+};
+
+const ncontent = 5;
+
+shuffle(data);
+
+const show = (id) => {
+  if (!id) {
+    id = data[rnd(data.length)].id;
+  }
+  main.innerHTML = "";
+  const d = data.find(d => d.id == id);
+  main.appendChild(makeContent(d));
+  for (let i = 0; i < ncontent - 1; i++) {
+    const d = data[i];
+    main.appendChild(makeContent(d));
+  }
+};
+
+show(location.hash.substring(1));
+
+onhashchange = () => {
+  show(location.hash.substring(1));
+  scrollTo(0, 0);
+};
 </script>
 
 <style>
