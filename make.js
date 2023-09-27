@@ -1,2 +1,3 @@
-import "./make_vec_fukuispot.js";
-import "./calc_vec_fukuispot.js";
+await import("./make_vec_fukuispot.js");
+await import("./calc_vec_fukuispot.js");
+
