@@ -1,5 +1,7 @@
 # fukui-spot-similar
 
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
+
 A tool to find similar tourist spots in Fukui prefecture, Japan.
 
 ## Demo
