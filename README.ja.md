@@ -10,12 +10,6 @@
 - 各スポット間の類似度を計算
 - 最も類似したトップ3と最も異なるトップ3の観光地を表示
 
-## 必要環境
-特になし。
-
-## 使い方
-Web ブラウザで上記デモページにアクセスするだけで利用できます。
-
 ## データ・API
 - [福井県観光スポットオープンデータ](https://github.com/code4fukui/fukui-spot)
 - [txt2vec by OpenAI Embedding (ADA002)](https://github.com/code4fukui/txt2vec)
